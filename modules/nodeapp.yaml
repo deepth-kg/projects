@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: node-app
+  name: sample-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: node-app
+      app: sample-app
   template:
     metadata:
       labels:
-        app: node-app
+        app: sample-app
     spec:
       containers:
-        - name: node-app
+        - name: sample-app
           image: 861276108607.dkr.ecr.ap-south-1.amazonaws.com/sample-app:v1
           ports:
             - containerPort: 3000
@@ -21,13 +21,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: node-app-service
+  name: sample-app-service
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-type: "alb"
 spec:
   type: NodePort
   selector:
-    app: node-app
+    app: sample-app
   ports:
     - port: 80          
       targetPort: 3000  
