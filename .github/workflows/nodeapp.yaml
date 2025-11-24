@@ -49,7 +49,7 @@ jobs:
       # Update ArgoCD deployment manifest securely and push changes
       - name: Update ArgoCD deployment manifest
         env:
-          GITHUB_PAT: ${{ secrets.GH_PAT }}
+          GITHUB_PAT:  ${{ secrets.GH_PAT }}
         run: |
           set -e
           # Replace the image tag in the manifest
