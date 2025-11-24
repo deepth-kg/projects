@@ -8,12 +8,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository with PAT for write access
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          token: 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
-
       # 2️⃣ Configure AWS credentials securely via GitHub secrets
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -56,8 +50,8 @@ jobs:
           sed -i "s|image:.*|image: $IMAGE_URI|" modules/nodeapp.yaml
           
           # Configure Git
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@github.com"
+          git config --global user.name "deepth-kg"
+          git config --global user.email "deepthaws@gmail.com"
           
           # Commit changes
           git add modules/nodeapp.yaml
