@@ -8,45 +8,61 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Configure AWS credentials securely via GitHub secrets
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: AKIA4RCAOO474QU33XK4
-          aws-secret-access-key: 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
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
+      # Login to Amazon ECR
       - name: Login to Amazon ECR
-        id: ecr-login
         uses: aws-actions/amazon-ecr-login@v1
 
+      # Download Dockerfile from S3
       - name: Download Dockerfile from S3
         run: |
           aws sts get-caller-identity
           aws s3 ls s3://mmnm-0987/
           aws s3 cp s3://mmnm-0987/Dockerfile ./Dockerfile
 
+      # Build Docker image
       - name: Build Docker image
         run: |
+          set -e
           IMAGE_TAG=${GITHUB_SHA::8}
           IMAGE_URI=861276108607.dkr.ecr.ap-south-1.amazonaws.com/sample-app:$IMAGE_TAG
           docker build -t $IMAGE_URI .
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
 
+      # Push Docker image to ECR
       - name: Push Docker image to ECR
         run: |
+          set -e
           docker push $IMAGE_URI
 
+      # Update ArgoCD deployment manifest securely and push changes
       - name: Update ArgoCD deployment manifest
+        env:
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
         run: |
+          set -e
+          # Replace the image tag in the manifest
           sed -i "s|image:.*|image: $IMAGE_URI|" modules/nodeapp.yaml
 
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/deepth-kg/projects.git
+          # Configure Git for commit
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions@github.com"
 
+          # Set remote with PAT for secure push
+          git remote set-url origin https://x-access-token:${GITHUB_PAT}@github.com/deepth-kg/projects.git
+
+          # Commit and push changes
           git add modules/nodeapp.yaml
           git commit -m "Update image tag to $IMAGE_URI"
           git push origin develop
