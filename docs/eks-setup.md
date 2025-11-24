@@ -23,6 +23,8 @@ eksctl create cluster \
   --nodes-min 1 \
   --nodes-max 3 \
   --managed
+<img width="1305" height="595" alt="image" src="https://github.com/user-attachments/assets/316b8446-dbf0-46b2-94e7-a4e893742e20" />
+<img width="1305" height="595" alt="image" src="https://github.com/user-attachments/assets/5398f8da-839e-461a-b7bd-fb74c3a6640e" />
 
   # Verification:
   kubectl get nodes -o wide
