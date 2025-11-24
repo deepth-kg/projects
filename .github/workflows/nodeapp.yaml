@@ -24,6 +24,7 @@ jobs:
 
       - name: Download Dockerfile from S3
         run: |
+          aws sts get-caller-identity
           aws s3 ls s3://S3_BUCKET/
           aws s3 cp s3://S3_BUCKET/Dockerfile ./Dockerfile
 
