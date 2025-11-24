@@ -1,4 +1,4 @@
-<img width="1308" height="693" alt="image" src="https://github.com/user-attachments/assets/294e6327-b3ec-4cba-96f0-f9e46badeefa" /># Title & Overview:
+# Title & Overview:
 
 This guide documents the process of setting up an AWS EKS cluster, deploying the AWS Load Balancer Controller, and installing ArgoCD for GitOps deployments.
 
