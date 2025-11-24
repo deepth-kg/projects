@@ -1,7 +1,7 @@
 name: Build and Push Docker to ECR
 
 on:
-  workflow_dispatch:  
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -46,13 +46,14 @@ jobs:
           set -e
           docker push $IMAGE_URI
 
-     - name: Update ArgoCD deployment manifest
-      run: |
-        sed -i "s|image:.*|image: $IMAGE_URI|" modules/nodeapp.yaml
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions@github.com"
-        git add modules/nodeapp.yaml
-        git commit -m "Update image tag to $IMAGE_URI"
-    # Use PAT in remote URL
-         git remote set-url origin https://x-access-token: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@github.com/deepth-kg/projects.git
-         git push origin develop
+      # Update ArgoCD deployment manifest
+      - name: Update ArgoCD deployment manifest
+        run: |
+          sed -i "s|image:.*|image: $IMAGE_URI|" modules/nodeapp.yaml
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@github.com"
+          git add modules/nodeapp.yaml
+          git commit -m "Update image tag to $IMAGE_URI"
+          # Use PAT in remote URL
+          git remote set-url origin https://x-access-token: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@github.com/deepth-kg/projects.git
+          git push origin develop
