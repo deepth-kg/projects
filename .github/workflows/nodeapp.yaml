@@ -60,7 +60,7 @@ jobs:
           git config user.email "github-actions@github.com"
 
           # Set remote with PAT for secure push
-          git remote set-url origin https://x-access-token:${GITHUB_PAT}@github.com/deepth-kg/projects.git
+          git remote set-url origin https://x-access-token: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@github.com/deepth-kg/projects.git
 
           # Commit and push changes
           git add modules/nodeapp.yaml
