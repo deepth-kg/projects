@@ -41,11 +41,12 @@ jobs:
 
       - name: Update ArgoCD deployment manifest
         run: |
-          IMAGE_URI=$IMAGE_URI
-          MANIFEST_PATH=modules/nodeapp.yaml
-          sed -i "s|image:.*|image: $IMAGE_URI|" $MANIFEST_PATH
-          git config --global user.name "deepth"
+          sed -i "s|image:.*|image: $IMAGE_URI|" modules/nodeapp.yaml
+
+          git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@github.com"
-          git add $MANIFEST_PATH
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/deepth-kg/projects.git
+
+          git add modules/nodeapp.yaml
           git commit -m "Update image tag to $IMAGE_URI"
-          git push
+          git push origin develop
