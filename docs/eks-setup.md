@@ -28,7 +28,9 @@ eksctl create cluster \
 
   # Verification:
   kubectl get nodes -o wide
+  
   kubectl get pods -A
+
   
   <img width="1051" height="179" alt="image" src="https://github.com/user-attachments/assets/15674495-6522-488d-9458-619463b42047" />
 
@@ -58,7 +60,9 @@ eksctl create iamserviceaccount \
 
 # Install Helm chart
 helm repo add eks https://aws.github.io/eks-charts
+
 helm repo update
+
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   -n kube-system \
   --set clusterName=my-eks-cluster \
